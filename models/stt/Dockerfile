@@ -3,6 +3,7 @@ FROM cp.icr.io/cp/ai/watson-stt-generic-models:1.1.0 as catalog
 # Add additional models here
 FROM cp.icr.io/cp/ai/watson-stt-en-us-multimedia:1.1.0 as en-us-multimedia
 FROM cp.icr.io/cp/ai/watson-stt-fr-fr-multimedia:1.1.0 as fr-fr-multimedia
+FROM cp.icr.io/cp/ai/watson-stt-generic-models:1.1.0 as generic-model
 
 # Base image for the runtime
 FROM cp.icr.io/cp/ai/watson-stt-runtime:1.1.0 AS runtime
@@ -25,6 +26,7 @@ RUN sudo mkdir -p /models/pool2
 # For each additional models, copy the line below with the model image
 COPY --chown=watson:0 --from=en-us-multimedia model/* /models/pool2/
 COPY --chown=watson:0 --from=fr-fr-multimedia model/* /models/pool2/
+COPY --chown=watson:0 --from=generic-model model/* /models/pool2/
 
 # Run script to initialize the model cache from the model archives
 COPY ./prepareModels.sh .

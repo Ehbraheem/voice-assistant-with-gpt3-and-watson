@@ -12,11 +12,12 @@
       "group": "default",
       "models": [
         "en-US_Multimedia",
-        "fr-FR_Multimedia"
+        "fr-FR_Multimedia",
+        "genericModels"
       ]
     }
   },
-  "defaultSTTModel": "en-US_Multimedia",
+  "defaultSTTModel": "genericModels",
   "defaultVerbosity": "DEBUG",
   "meteringEnabled": false,
   "requireCookies": false,
