@@ -3,6 +3,8 @@ import requests
 
 openai_client = OpenAI()
 
+SYSTEM_PROMPT = 'Act like a personal assistant. You can respond to questions, translate sentences, summarize news, and give recommendations.'
+
 
 def speech_to_text(audio_binary):
     base_url = "https://sn-watson-stt.labs.skills.network"
@@ -29,7 +31,20 @@ def text_to_speech(text, voice=""):
 
 
 def openai_process_message(user_message):
-    return None
+    openai_response = openai_client.chat.completions.create(
+        model='gpt-3.5-turbo',
+        messages[
+            { 'role': 'system', 'content': SYSTEM_PROMPT },
+            { 'role': 'user', 'content': text }
+        ],
+        max_tokens=4000
+    )
+
+    print('OpenAI response: ', openai_response)
+
+    response_text = openai_response.choices[0].mesage.content
+
+    return response_text
 
 
 def __make_call__(endpoint, params, data):
