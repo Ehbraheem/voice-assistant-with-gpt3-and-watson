@@ -12,7 +12,7 @@ def speech_to_text(audio_binary):
 
     params = { 'model': 'en-US_Multimedia' }
 
-    response = __make_call__(api_url, params, audio_binary)
+    response = requests.post(api_url, params=params, data=audio_binary).json()
 
     text = 'null'
     while bool(response.get('results')):
@@ -27,7 +27,24 @@ def speech_to_text(audio_binary):
 
 def text_to_speech(text, voice=""):
     base_url = "https://sn-watson-tts.labs.skills.network"
-    return None
+    api_url = f'{base_url}/text-to-speech/api/v1/synthesize?output=output_text.wav'
+
+    if voice and voice != 'default':
+        api_url = f'{api_url}&voice={voice}'
+
+    headers = {
+        'Accept': 'audio/wav',
+        'Content-Type': 'application/json'
+    }
+
+    data = {
+        'text': text
+    }
+
+    response = requests.post(api_url, headers=headers, json=data)
+    print('Text to Speech response: ', response)
+
+    return response.content
 
 
 def openai_process_message(user_message):
@@ -45,9 +62,3 @@ def openai_process_message(user_message):
     response_text = openai_response.choices[0].mesage.content
 
     return response_text
-
-
-def __make_call__(endpoint, params, data):
-    response = requests.post(endpoint, params=params, data=data)
-
-    return response.json()
