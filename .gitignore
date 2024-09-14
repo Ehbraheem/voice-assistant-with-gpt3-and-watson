@@ -1,2 +1,4 @@
 .theia
 __*
+.DS*
+*env
