@@ -4,3 +4,4 @@ sessionPoolPolicies:
   # UPDATE BELOW WITH MODELS USED
     - name: en-US_Multimedia
     - name: fr-FR_Multimedia
+    - name: genericModels
