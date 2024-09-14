@@ -15,7 +15,7 @@ FROM cp.icr.io/cp/ai/watson-tts-fr-ca-louisev3voice:1.1.0 AS louisev3voice
 FROM cp.icr.io/cp/ai/watson-tts-fr-fr-reneev3voice:1.1.0 AS reneev3voice
 FROM cp.icr.io/cp/ai/watson-tts-fr-fr-nicolasv3voice:1.1.0 AS nicolasv3voice
 FROM cp.icr.io/cp/ai/watson-tts-it-it-francescav3voice:1.1.0 AS francescav3voice
-FROM cp.icr.io/cp/ai/watson-tts-generic-model:1.1.0 AS genericModels
+FROM cp.icr.io/cp/ai/watson-tts-generic-models:1.1.0 AS genericModels
 
 # Base image for the runtime
 FROM cp.icr.io/cp/ai/watson-tts-runtime:1.1.0 AS runtime
