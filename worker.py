@@ -22,8 +22,6 @@ def speech_to_text(audio_binary):
 
         return text
 
-    return None
-
 
 def text_to_speech(text, voice=""):
     base_url = "https://sn-watson-tts.labs.skills.network"
