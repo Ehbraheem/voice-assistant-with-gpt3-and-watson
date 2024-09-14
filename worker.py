@@ -50,7 +50,7 @@ def text_to_speech(text, voice=""):
 def openai_process_message(user_message):
     openai_response = openai_client.chat.completions.create(
         model='gpt-3.5-turbo',
-        messages[
+        messages=[
             { 'role': 'system', 'content': SYSTEM_PROMPT },
             { 'role': 'user', 'content': text }
         ],

@@ -4,6 +4,9 @@ from flask import Flask, render_template, request
 from worker import speech_to_text, text_to_speech, openai_process_message
 from flask_cors import CORS
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
