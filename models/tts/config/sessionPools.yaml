@@ -15,5 +15,4 @@ sessionPoolPolicies:
     - name: fr-FR_ReneeV3Voice
     - name: fr-FR_NicolasV3Voice
     - name: it-IT_FrancescaV3Voice
-    - name: genericModels
     

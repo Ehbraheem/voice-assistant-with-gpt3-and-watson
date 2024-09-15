@@ -24,12 +24,11 @@
         "fr-CA_LouiseV3Voice",
         "fr-FR_ReneeV3Voice",
         "fr-FR_NicolasV3Voice",
-        "it-IT_FrancescaV3Voice",
-        "genericModels"
+        "it-IT_FrancescaV3Voice"
       ]
     }
   },
-  "defaultTTSVoice": "genericModels",
+  "defaultTTSVoice": "en-US_MichaelV3Voice",
   "defaultVerbosity": "INFO",
   "meteringEnabled": true,
   "requireCookies": false,

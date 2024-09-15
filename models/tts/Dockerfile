@@ -15,7 +15,6 @@ FROM cp.icr.io/cp/ai/watson-tts-fr-ca-louisev3voice:1.1.0 AS louisev3voice
 FROM cp.icr.io/cp/ai/watson-tts-fr-fr-reneev3voice:1.1.0 AS reneev3voice
 FROM cp.icr.io/cp/ai/watson-tts-fr-fr-nicolasv3voice:1.1.0 AS nicolasv3voice
 FROM cp.icr.io/cp/ai/watson-tts-it-it-francescav3voice:1.1.0 AS francescav3voice
-FROM cp.icr.io/cp/ai/watson-tts-generic-models:1.1.0 AS genericModels
 
 # Base image for the runtime
 FROM cp.icr.io/cp/ai/watson-tts-runtime:1.1.0 AS runtime
@@ -48,7 +47,6 @@ COPY --chown=watson:0 --from=louisev3voice model/* /models/pool2/
 COPY --chown=watson:0 --from=reneev3voice model/* /models/pool2/
 COPY --chown=watson:0 --from=nicolasv3voice model/* /models/pool2/
 COPY --chown=watson:0 --from=francescav3voice model/* /models/pool2/
-COPY --chown=watson:0 --from=genericModels model/* /models/pool2/
 
 # Run script to initialize the model cache from the model archives
 COPY ./prepareModels.sh .
