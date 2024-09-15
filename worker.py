@@ -1,14 +1,17 @@
-from openai import OpenAI
+import os
 import requests
+from openai import OpenAI
 
 openai_client = OpenAI()
+
+STT_BASE_URL = os.getenv('STT_BASE_URL') or "https://sn-watson-stt.labs.skills.network"
+TTS_BASE_URL = os.getenv('TTS_BASE_URL') or "https://sn-watson-tts.labs.skills.network"
 
 SYSTEM_PROMPT = 'Act like a personal assistant. You can respond to questions, translate sentences, summarize news, and give recommendations.'
 
 
 def speech_to_text(audio_binary):
-    base_url = "https://sn-watson-stt.labs.skills.network"
-    api_url = f'{base_url}/speech-to-text/api/v1/recognize'
+    api_url = f'{STT_BASE_URL}/speech-to-text/api/v1/recognize'
 
     params = { 'model': 'en-US_Multimedia' }
 
@@ -24,8 +27,7 @@ def speech_to_text(audio_binary):
 
 
 def text_to_speech(text, voice=""):
-    base_url = "https://sn-watson-tts.labs.skills.network"
-    api_url = f'{base_url}/text-to-speech/api/v1/synthesize?output=output_text.wav'
+    api_url = f'{TTS_BASE_URL}/text-to-speech/api/v1/synthesize?output=output_text.wav'
 
     if voice and voice != 'default':
         api_url = f'{api_url}&voice={voice}'

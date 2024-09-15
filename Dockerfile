@@ -1,9 +1,11 @@
 FROM python:3.10
 
 WORKDIR /app
-COPY . .
 
+COPY .env requirements.txt .
 RUN pip install -r requirements.txt
+
+COPY . .
 
 # -----------------------------------------------------------------
 # Copy certificates to make use of free open ai usage within the lab
