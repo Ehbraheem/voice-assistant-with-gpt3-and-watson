@@ -1,6 +1,10 @@
 import os
 import requests
 from openai import OpenAI
+from dotenv import load_dotenv
+from functools import reduce
+
+load_dotenv()
 
 openai_client = OpenAI()
 
@@ -18,12 +22,16 @@ def speech_to_text(audio_binary):
     response = requests.post(api_url, params=params, data=audio_binary).json()
 
     text = 'null'
-    while bool(response.get('results')):
-        print('speech to text response: ', response)
-        text = resources.get('results').pop().get('alternatives').pop().get('transcript')
-        print('recognised text: ', text)
-
+    if not bool(response.get('results')):
         return text
+
+    flattened_result = reduce(lambda accum, curr: accum + curr.get('alternatives', []), response.get('results'), [])
+
+    winning_prediction = max(flattened_result, key=lambda r: r.get('confidence'))
+
+    text = winning_prediction.get('transcript', text).strip()
+
+    return text
 
 
 def text_to_speech(text, voice=""):
@@ -52,13 +60,13 @@ def openai_process_message(user_message):
         model='gpt-3.5-turbo',
         messages=[
             { 'role': 'system', 'content': SYSTEM_PROMPT },
-            { 'role': 'user', 'content': text }
+            { 'role': 'user', 'content': user_message }
         ],
         max_tokens=4000
     )
 
     print('OpenAI response: ', openai_response)
 
-    response_text = openai_response.choices[0].mesage.content
+    response_text = openai_response.choices[0].message.content
 
     return response_text
