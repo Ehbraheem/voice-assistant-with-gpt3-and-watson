@@ -6,10 +6,18 @@ from functools import reduce
 
 load_dotenv()
 
-openai_client = OpenAI()
 
 STT_BASE_URL = os.getenv('STT_BASE_URL') or "https://sn-watson-stt.labs.skills.network"
 TTS_BASE_URL = os.getenv('TTS_BASE_URL') or "https://sn-watson-tts.labs.skills.network"
+
+token = os.environ["GITHUB_TOKEN"]
+endpoint = "https://models.inference.ai.azure.com"
+model_name = "gpt-4o-mini"
+
+openai_client = OpenAI(
+    base_url=endpoint,
+    api_key=token,
+)
 
 SYSTEM_PROMPT = 'Act like a personal assistant. You can respond to questions, translate sentences, summarize news, and give recommendations.'
 
@@ -57,12 +65,12 @@ def text_to_speech(text, voice=""):
 
 def openai_process_message(user_message):
     openai_response = openai_client.chat.completions.create(
-        model='gpt-3.5-turbo',
+        model=model_name,
         messages=[
             { 'role': 'system', 'content': SYSTEM_PROMPT },
             { 'role': 'user', 'content': user_message }
         ],
-        max_tokens=4000
+        max_tokens=4000,
     )
 
     print('OpenAI response: ', openai_response)
