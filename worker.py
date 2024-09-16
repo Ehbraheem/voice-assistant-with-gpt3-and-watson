@@ -10,7 +10,7 @@ load_dotenv()
 STT_BASE_URL = os.getenv('STT_BASE_URL') or "https://sn-watson-stt.labs.skills.network"
 TTS_BASE_URL = os.getenv('TTS_BASE_URL') or "https://sn-watson-tts.labs.skills.network"
 
-token = os.environ["GITHUB_TOKEN"]
+token = os.getenv("GITHUB_TOKEN")
 endpoint = "https://models.inference.ai.azure.com"
 model_name = "gpt-4o-mini"
 
