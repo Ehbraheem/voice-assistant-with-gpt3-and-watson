@@ -1,33 +1,49 @@
-from openai import OpenAI
+import os
 import requests
+from openai import OpenAI
+from dotenv import load_dotenv
+from functools import reduce
 
-openai_client = OpenAI()
+load_dotenv()
+
+
+STT_BASE_URL = os.getenv('STT_BASE_URL') or "https://sn-watson-stt.labs.skills.network"
+TTS_BASE_URL = os.getenv('TTS_BASE_URL') or "https://sn-watson-tts.labs.skills.network"
+
+token = os.getenv("GITHUB_TOKEN")
+endpoint = "https://models.inference.ai.azure.com"
+model_name = "gpt-4o-mini"
+
+openai_client = OpenAI(
+    base_url=endpoint,
+    api_key=token,
+)
 
 SYSTEM_PROMPT = 'Act like a personal assistant. You can respond to questions, translate sentences, summarize news, and give recommendations.'
 
 
 def speech_to_text(audio_binary):
-    base_url = "https://sn-watson-stt.labs.skills.network"
-    api_url = f'{base_url}/speech-to-text/api/v1/recognize'
+    api_url = f'{STT_BASE_URL}/speech-to-text/api/v1/recognize'
 
     params = { 'model': 'en-US_Multimedia' }
 
     response = requests.post(api_url, params=params, data=audio_binary).json()
 
     text = 'null'
-    while bool(response.get('results')):
-        print('speech to text response: ', response)
-        text = resources.get('results').pop().get('alternatives').pop().get('transcript')
-        print('recognised text: ', text)
-
+    if not bool(response.get('results')):
         return text
 
-    return None
+    flattened_result = reduce(lambda accum, curr: accum + curr.get('alternatives', []), response.get('results'), [])
+
+    winning_prediction = max(flattened_result, key=lambda r: r.get('confidence'))
+
+    text = winning_prediction.get('transcript', text).strip()
+
+    return text
 
 
 def text_to_speech(text, voice=""):
-    base_url = "https://sn-watson-tts.labs.skills.network"
-    api_url = f'{base_url}/text-to-speech/api/v1/synthesize?output=output_text.wav'
+    api_url = f'{TTS_BASE_URL}/text-to-speech/api/v1/synthesize?output=output_text.wav'
 
     if voice and voice != 'default':
         api_url = f'{api_url}&voice={voice}'
@@ -49,16 +65,16 @@ def text_to_speech(text, voice=""):
 
 def openai_process_message(user_message):
     openai_response = openai_client.chat.completions.create(
-        model='gpt-3.5-turbo',
-        messages[
+        model=model_name,
+        messages=[
             { 'role': 'system', 'content': SYSTEM_PROMPT },
-            { 'role': 'user', 'content': text }
+            { 'role': 'user', 'content': user_message }
         ],
-        max_tokens=4000
+        max_tokens=4000,
     )
 
     print('OpenAI response: ', openai_response)
 
-    response_text = openai_response.choices[0].mesage.content
+    response_text = openai_response.choices[0].message.content
 
     return response_text

@@ -4,6 +4,9 @@ from flask import Flask, render_template, request
 from worker import speech_to_text, text_to_speech, openai_process_message
 from flask_cors import CORS
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -40,7 +43,7 @@ def process_prompt_route():
     print('voice: ', voice)
 
     openai_response_text = openai_process_message(user_message)
-    openai_response_text = os.linesp.join([s for s in openai_response_text.splitlines() if s ])
+    openai_response_text = os.linesep.join([s for s in openai_response_text.splitlines() if s ])
 
     openai_response_speech = text_to_speech(openai_response_text, voice)
     openai_response_speech = base64.b64encode(openai_response_speech).decode('utf-8')
